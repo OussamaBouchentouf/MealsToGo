@@ -64,18 +64,18 @@ export const RestaurantInfo = ({ restaurant = {} }) => {
   const {
     name = "some Restaurants",
     icon = null,
-    photos = "https://picsum.photos/700",
+    photos = ["https://picsum.photos/700"],
     adress = " 100 in some street",
-    isOpenNow = true,
+    isOpenNow,
     rating = 5,
-    isClosedTmp = true,
+    isClosedTmp,
   } = restaurant;
 
   const ratingArray = Array.from(new Array(Math.floor(rating)));
 
   return (
     <RestaurantCardView>
-      <RestaurantCardCover source={{ uri: photos }} />
+      <RestaurantCardCover source={{ uri: photos[0] }} />
       <RestaurantCardContent>
         <RestaurantTitle>{name}</RestaurantTitle>
         <Section_Rating_and_isOpen>
@@ -98,7 +98,7 @@ export const RestaurantInfo = ({ restaurant = {} }) => {
               )}
               {icon === null ? null : (
                 <Image
-                  style={{ width: 20, marginLeft: 5, resizeMode: "cover" }}
+                  style={{ width: 20, marginLeft: 5, resizeMode: "contain" }}
                   source={{ uri: icon }}
                 />
               )}

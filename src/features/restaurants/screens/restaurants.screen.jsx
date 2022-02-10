@@ -1,9 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components/native";
-import { SafeAreaView, FlatList } from "react-native";
-import { Searchbar } from "react-native-paper";
+import {
+  SafeAreaView,
+  FlatList,
+  DevSettings,
+  RefreshControl,
+} from "react-native";
+import { ActivityIndicator } from "react-native-paper";
 
 import { RestaurantInfo } from "../components/restaurant-info.component";
+import { RestaurantContext } from "../../../services/restaurants/restaurants.context";
+import { Search } from "../components/search.component";
 
 const GlobalView = styled(SafeAreaView)`
   align-items: flex-start;
@@ -12,23 +19,16 @@ const GlobalView = styled(SafeAreaView)`
   background-color: ${(props) => props.theme.colors.ui.disabled};
 `;
 
-const SearchView = styled.View`
-  width: ${(props) => props.theme.phoneDimensions.windowWidth}px;
-  height: ${(props) => props.theme.phoneDimensions.windowWidth * 0.15}px;
-  align-items: center;
-  justify-content: center;
-`;
-
-const MySearchbar = styled(Searchbar)`
-  height: ${(props) => props.theme.sizesPourcentages[7]};
-  width: ${(props) => props.theme.sizesPourcentages[9]};
-  border-radius: ${(props) => props.theme.space[3]};
-`;
-
 const RestaurantListView = styled.View`
   flex: 1;
   width: ${(props) => props.theme.phoneDimensions.windowWidth}px;
   background-color: ${(props) => props.theme.colors.ui.disabled};
+`;
+
+const LoadingIndicator = styled(ActivityIndicator)`
+  flex: 1;
+  align-self: center;
+  justify-content: center;
 `;
 
 /* the "attrs" gives us the ability to set some props of some components */
@@ -39,38 +39,39 @@ const RestaurantList = styled(FlatList).attrs({
 })``;
 
 export const RestaurantScreen = () => {
+  const [refreshing, setRefreshing] = React.useState(false);
+  const { isLoading, error, restaurants } = useContext(RestaurantContext);
+
+  const wait = (timeout) => {
+    return new Promise((resolve) => setTimeout(resolve, timeout));
+  };
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    wait(2000).then(() => {
+      setRefreshing(false), DevSettings.reload();
+    });
+  }, []);
+
   return (
     <GlobalView>
-      <SearchView>
-        <MySearchbar
-          placeholder="Search here"
-          keyboardAppearance="dark"
-          enablesReturnKeyAutomatically
-        />
-      </SearchView>
+      <Search />
       <RestaurantListView>
-        <RestaurantList
-          keyboardDismissMode="on-drag"
-          data={[
-            {
-              name: "oussamaBouchentouf3",
-              adress: "hay zitoune lot benmimoune",
-              rating: 2,
-            },
-            {
-              name: "oussamaBouchentouf2",
-              adress: "hay zitoune lot benmimoune",
-              rating: 2,
-            },
-            {
-              name: "oussamaBouchentouf1",
-              adress: "hay zitoune lot benmimoune",
-              rating: 2,
-            },
-          ]}
-          renderItem={() => <RestaurantInfo />}
-          keyExtractor={(item) => item.name}
-        />
+        {isLoading ? (
+          <LoadingIndicator animating={true} color={"blue"} size={"large"} />
+        ) : (
+          <RestaurantList
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+            keyboardDismissMode="on-drag"
+            data={restaurants}
+            renderItem={({ item }) => {
+              return <RestaurantInfo restaurant={item} />;
+            }}
+            keyExtractor={(item) => item.name}
+          />
+        )}
       </RestaurantListView>
     </GlobalView>
   );

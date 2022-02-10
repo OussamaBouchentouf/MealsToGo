@@ -1,7 +1,13 @@
 import React from "react";
-import { StatusBar, Platform, Text } from "react-native";
+import { StatusBar, Text } from "react-native";
 import { ThemeProvider } from "styled-components/native";
 import { useColorScheme } from "react-native-appearance";
+import {
+  NavigationContainer,
+  DefaultTheme,
+  DarkTheme,
+} from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import {
   useFonts as useOswals,
@@ -14,17 +20,10 @@ import {
 } from "@expo-google-fonts/lato";
 import { Ionicons } from "@expo/vector-icons";
 
-import {
-  NavigationContainer,
-  DefaultTheme,
-  DarkTheme,
-} from "@react-navigation/native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-
 import { RestaurantScreen } from "./src/features/restaurants/screens/restaurants.screen";
 import { theme } from "./src/infrastructure/theme";
-
-const isAndroid = Platform.OS === "android";
+import { RestaurantContextProvider } from "./src/services/restaurants/restaurants.context";
+import { LocationContextProvider } from "./src/services/location/location.context";
 
 function HomeScreen() {
   return <RestaurantScreen />;
@@ -63,48 +62,45 @@ export default function App() {
 
   return (
     <>
-      <StatusBar barStyle={isAndroid ? "default" : "dark-content"} />
+      <StatusBar
+        backgroundColor={theme.colors.ui.disabled}
+        barStyle="dark-content"
+      />
       <ThemeProvider theme={theme}>
-        <NavigationContainer
-          theme={scheme === "dark" ? DarkTheme : DefaultTheme}
-        >
-          <Tab.Navigator
-            screenOptions={({ route }) => ({
-              tabBarIcon: ({ color }) => {
-                let iconName;
+        <LocationContextProvider>
+          <RestaurantContextProvider>
+            <NavigationContainer
+              theme={scheme === "dark" ? DarkTheme : DefaultTheme}
+            >
+              <Tab.Navigator
+                screenOptions={({ route }) => ({
+                  tabBarIcon: ({ color }) => {
+                    let iconName;
 
-                if (route.name === "Restaurants") {
-                  iconName = "restaurant";
-                } else if (route.name === "Map") {
-                  iconName = "map";
-                } else {
-                  iconName = "settings";
-                }
+                    if (route.name === "Restaurants") {
+                      iconName = "restaurant";
+                    } else if (route.name === "Map") {
+                      iconName = "map";
+                    } else {
+                      iconName = "settings";
+                    }
 
-                // You can return any component that you like here!
-                return <Ionicons name={iconName} size={20} color={color} />;
-              },
-              tabBarActiveTintColor: theme.colors.brand.secondary,
-              tabBarInactiveTintColor: "gray",
-            })}
-          >
-            <Tab.Screen
-              name="Restaurants"
-              component={HomeScreen}
-              options={{ headerShown: false }}
-            />
-            <Tab.Screen
-              name="Map"
-              component={MapScreen}
-              options={{ headerShown: false }}
-            />
-            <Tab.Screen
-              name="Settings"
-              component={SettingsScreen}
-              options={{ headerShown: false }}
-            />
-          </Tab.Navigator>
-        </NavigationContainer>
+                    // You can return any component that you like here!
+                    return <Ionicons name={iconName} size={20} color={color} />;
+                  },
+                  tabBarActiveTintColor: theme.colors.brand.secondary,
+                  tabBarInactiveTintColor: "gray",
+                  tabBarHideOnKeyboard: true,
+                  headerShown: false,
+                })}
+              >
+                <Tab.Screen name="Restaurants" component={HomeScreen} />
+                <Tab.Screen name="Map" component={MapScreen} />
+                <Tab.Screen name="Settings" component={SettingsScreen} />
+              </Tab.Navigator>
+            </NavigationContainer>
+          </RestaurantContextProvider>
+        </LocationContextProvider>
       </ThemeProvider>
     </>
   );
