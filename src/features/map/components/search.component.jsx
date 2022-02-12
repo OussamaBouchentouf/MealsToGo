@@ -12,6 +12,9 @@ const SearchView = styled.View`
   height: ${(props) => props.theme.phoneDimensions.windowWidth * 0.15}px;
   align-items: center;
   justify-content: center;
+  position: absolute;
+  z-index: 999;
+  top: 20px;
 `;
 
 const MySearchbar = styled(Searchbar)`

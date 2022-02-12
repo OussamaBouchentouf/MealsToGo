@@ -80,7 +80,7 @@ export const RestaurantInfo = ({ restaurant = {} }) => {
         <RestaurantTitle>{name}</RestaurantTitle>
         <Section_Rating_and_isOpen>
           <Rating>
-            {ratingArray.map((item, index) => (
+            {ratingArray.map((_, index) => (
               <RatingStar xml={star} key={index} />
             ))}
           </Rating>

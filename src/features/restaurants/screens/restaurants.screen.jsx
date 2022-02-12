@@ -5,6 +5,7 @@ import {
   FlatList,
   DevSettings,
   RefreshControl,
+  TouchableOpacity,
 } from "react-native";
 import { ActivityIndicator } from "react-native-paper";
 
@@ -38,9 +39,9 @@ const RestaurantList = styled(FlatList).attrs({
   },
 })``;
 
-export const RestaurantScreen = () => {
+export const RestaurantScreen = ({ navigation }) => {
   const [refreshing, setRefreshing] = React.useState(false);
-  const { isLoading, error, restaurants } = useContext(RestaurantContext);
+  const { isLoading, restaurants } = useContext(RestaurantContext);
 
   const wait = (timeout) => {
     return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -49,7 +50,7 @@ export const RestaurantScreen = () => {
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     wait(2000).then(() => {
-      setRefreshing(false), DevSettings.reload();
+      setRefreshing(false); //DevSettings.reload();
     });
   }, []);
 
@@ -67,7 +68,18 @@ export const RestaurantScreen = () => {
             keyboardDismissMode="on-drag"
             data={restaurants}
             renderItem={({ item }) => {
-              return <RestaurantInfo restaurant={item} />;
+              return (
+                <TouchableOpacity
+                  activeOpacity={0.6}
+                  onPress={() => {
+                    navigation.navigate("RestaurantsDetails", {
+                      restaurantFromRoute: item,
+                    });
+                  }}
+                >
+                  <RestaurantInfo restaurant={item} />
+                </TouchableOpacity>
+              );
             }}
             keyExtractor={(item) => item.name}
           />

@@ -20,7 +20,7 @@
             }
           }
         },
-        "ix": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+        "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
         "name": "Zuni Café",
         "opening_hours": {
           "open_now": true
@@ -971,7 +971,7 @@
           "global_code": "",
         },
         "price_level": 2,
-        "rating": 4.5,
+        "rating": 5,
         "reference": "",
         "scope": "",
         "types": [
@@ -1023,7 +1023,7 @@
           "global_code": "",
         },
         "price_level": 2,
-        "rating": 4.2,
+        "rating": 2,
         "reference": "",
         "scope": "",
         "types": [
