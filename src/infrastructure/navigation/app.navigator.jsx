@@ -1,38 +1,27 @@
 import React from "react";
-import { Text } from "react-native";
-import {
-  NavigationContainer,
-  DefaultTheme,
-  DarkTheme,
-} from "@react-navigation/native";
-import { useColorScheme } from "react-native-appearance";
+import { Text, View } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import { Ionicons } from "@expo/vector-icons";
 
 import { RestaurantsNavigator } from "./restaurants.navigator";
-import { theme } from "../../infrastructure/theme";
+import { theme } from "../theme";
 import { MapScreen } from "../../features/map/screens/map.screen";
 
 const Tab = createBottomTabNavigator();
 
-const HomeScreen = () => {
-  return <RestaurantScreen />;
-};
-
 const SettingsScreen = () => {
   return (
-    <>
+    <View style={{ backgroundColor: theme.colors.bg.secondary }}>
       <Text style={{}}>Settings</Text>
-    </>
+    </View>
   );
 };
 
 export const AppNavigation = () => {
-  const scheme = useColorScheme();
-
   return (
-    <NavigationContainer theme={scheme === "dark" ? DarkTheme : DefaultTheme}>
+    <NavigationContainer>
       <Tab.Navigator
         screenOptions={({ route }) => ({
           tabBarIcon: ({ color }) => {
@@ -55,8 +44,13 @@ export const AppNavigation = () => {
           headerShown: false,
         })}
       >
+        {/*Any view that is given to a component has navigation props*/}
         <Tab.Screen name="Restaurants" component={RestaurantsNavigator} />
-        <Tab.Screen name="Map" component={MapScreen} />
+        <Tab.Screen
+          name="Map"
+          component={MapScreen}
+          options={{ tabBarHideOnKeyboard: false }}
+        />
         <Tab.Screen name="Settings" component={SettingsScreen} />
       </Tab.Navigator>
     </NavigationContainer>

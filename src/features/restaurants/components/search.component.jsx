@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import styled from "styled-components/native";
 import { Searchbar } from "react-native-paper";
 import { Platform } from "react-native";
@@ -20,15 +20,21 @@ const MySearchbar = styled(Searchbar)`
   border-radius: ${(props) => props.theme.space[3]};
 `;
 
-export const Search = () => {
+export const Search = ({ isFavouriteToggle, onFavouriteToggle }) => {
   const { keyword, search } = useContext(LocationContext);
   const [searchKeyword, setSearchKeyword] = useState(keyword);
+
+  useEffect(() => {
+    setSearchKeyword(keyword);
+  }, [keyword]);
 
   return (
     <SearchView>
       <MySearchbar
         placeholder="Search for a location"
         keyboardAppearance="dark"
+        icon={isFavouriteToggle ? "heart" : "heart-outline"}
+        onIconPress={onFavouriteToggle}
         value={searchKeyword}
         onSubmitEditing={() => {
           search(searchKeyword);

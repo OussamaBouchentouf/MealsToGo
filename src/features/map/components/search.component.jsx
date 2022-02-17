@@ -1,11 +1,8 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components/native";
 import { Searchbar } from "react-native-paper";
-import { Platform } from "react-native";
 
 import { LocationContext } from "../../../services/location/location.context";
-
-const isAndroid = Platform.OS === "android " ? true : false;
 
 const SearchView = styled.View`
   width: ${(props) => props.theme.phoneDimensions.windowWidth}px;
@@ -14,7 +11,7 @@ const SearchView = styled.View`
   justify-content: center;
   position: absolute;
   z-index: 999;
-  top: 20px;
+  top: 40px;
 `;
 
 const MySearchbar = styled(Searchbar)`
@@ -27,11 +24,16 @@ export const Search = () => {
   const { keyword, search } = useContext(LocationContext);
   const [searchKeyword, setSearchKeyword] = useState(keyword);
 
+  useEffect(() => {
+    setSearchKeyword(keyword);
+  }, [keyword]);
+
   return (
     <SearchView>
       <MySearchbar
         placeholder="Search for a location"
         keyboardAppearance="dark"
+        icon="map"
         value={searchKeyword}
         onSubmitEditing={() => {
           search(searchKeyword);

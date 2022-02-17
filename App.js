@@ -1,6 +1,8 @@
 import React from "react";
-import { StatusBar } from "react-native";
+import { Platform, StatusBar } from "react-native";
 import { ThemeProvider } from "styled-components/native";
+
+import * as firebase from "firebase";
 
 import {
   useFonts as useOswals,
@@ -15,7 +17,21 @@ import {
 import { theme } from "./src/infrastructure/theme";
 import { RestaurantContextProvider } from "./src/services/restaurants/restaurants.context";
 import { LocationContextProvider } from "./src/services/location/location.context";
+import { FavouritesContextProvider } from "./src/services/favourites/favourite.context";
 import { NavigationComponents } from "./src/infrastructure/navigation/index.Navigator";
+
+const isAndroid = Platform.OS === "android" ? true : false;
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBG6rUiiHpHwnn5R2plqyK37au1LhcikHQ",
+  authDomain: "mealstogo-fbd93.firebaseapp.com",
+  projectId: "mealstogo-fbd93",
+  storageBucket: "mealstogo-fbd93.appspot.com",
+  messagingSenderId: "586160479526",
+  appId: "1:586160479526:web:e38dfd460c345aa5c335e7",
+};
+
+firebase.initializeApp(firebaseConfig);
 
 export default function App() {
   let [oswaldLoader] = useOswals({
@@ -30,16 +46,27 @@ export default function App() {
 
   return (
     <>
-      <StatusBar
-        backgroundColor={theme.colors.ui.disabled}
-        barStyle="dark-content"
-      />
+      {isAndroid ? (
+        <StatusBar
+          backgroundColor={theme.colors.ui.disabled}
+          barStyle="dark-content"
+          hidden={true}
+        />
+      ) : (
+        <StatusBar
+          backgroundColor={theme.colors.ui.disabled}
+          barStyle="dark-content"
+        />
+      )}
+
       <ThemeProvider theme={theme}>
-        <LocationContextProvider>
-          <RestaurantContextProvider>
-            <NavigationComponents />
-          </RestaurantContextProvider>
-        </LocationContextProvider>
+        <FavouritesContextProvider>
+          <LocationContextProvider>
+            <RestaurantContextProvider>
+              <NavigationComponents />
+            </RestaurantContextProvider>
+          </LocationContextProvider>
+        </FavouritesContextProvider>
       </ThemeProvider>
     </>
   );

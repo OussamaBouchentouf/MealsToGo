@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components/native";
 import {
   SafeAreaView,
@@ -11,7 +11,9 @@ import { ActivityIndicator } from "react-native-paper";
 
 import { RestaurantInfo } from "../components/restaurant-info.component";
 import { RestaurantContext } from "../../../services/restaurants/restaurants.context";
+import { FavouritesContext } from "../../../services/favourites/favourite.context";
 import { Search } from "../components/search.component";
+import { FavouriteBar } from "../../../components/favourites/favourites-bar.component";
 
 const GlobalView = styled(SafeAreaView)`
   align-items: flex-start;
@@ -42,6 +44,8 @@ const RestaurantList = styled(FlatList).attrs({
 export const RestaurantScreen = ({ navigation }) => {
   const [refreshing, setRefreshing] = React.useState(false);
   const { isLoading, restaurants } = useContext(RestaurantContext);
+  const { favourites } = useContext(FavouritesContext);
+  const [isToggled, setIsToggled] = useState(false);
 
   const wait = (timeout) => {
     return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -56,7 +60,16 @@ export const RestaurantScreen = ({ navigation }) => {
 
   return (
     <GlobalView>
-      <Search />
+      <Search
+        isFavouriteToggle={isToggled}
+        onFavouriteToggle={() => setIsToggled(!isToggled)}
+      />
+      {isToggled && (
+        <FavouriteBar
+          favourites={favourites}
+          onNavigate={navigation.navigate}
+        />
+      )}
       <RestaurantListView>
         {isLoading ? (
           <LoadingIndicator animating={true} color={"blue"} size={"large"} />

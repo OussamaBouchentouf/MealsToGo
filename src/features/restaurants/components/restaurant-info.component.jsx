@@ -7,6 +7,7 @@ import { Text, View, Image } from "react-native";
 import star from "../../../../assets/star";
 import open from "../../../../assets/open";
 import close from "../../../../assets/close";
+import { Favourite } from "../../../components/favourites/favourites.component";
 
 const RestaurantCardView = styled(Card)`
   margin: ${(props) => props.theme.space[2]};
@@ -75,6 +76,7 @@ export const RestaurantInfo = ({ restaurant = {} }) => {
 
   return (
     <RestaurantCardView>
+      <Favourite restaurant={restaurant} />
       <RestaurantCardCover source={{ uri: photos[0] }} />
       <RestaurantCardContent>
         <RestaurantTitle>{name}</RestaurantTitle>
