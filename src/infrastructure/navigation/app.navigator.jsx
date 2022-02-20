@@ -48,7 +48,7 @@ export const AppNavigation = () => {
               component={MapScreen}
               options={{ tabBarHideOnKeyboard: false }}
             />
-            <Tab.Screen name="Settings" component={SettingsNavigator} />
+            <Tab.Screen name="Global Settings" component={SettingsNavigator} />
           </Tab.Navigator>
         </RestaurantContextProvider>
       </LocationContextProvider>

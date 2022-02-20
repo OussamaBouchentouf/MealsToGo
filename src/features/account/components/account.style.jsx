@@ -25,7 +25,7 @@ export const AuthButton = styled(Button).attrs({
 })`
   padding: 08px;
   border-radius: 10px;
-  width: ${Dimensions.get("screen").width * 0.4};
+  width: ${Dimensions.get("screen").width * 0.4}px;
   align-self: center;
 `;
 

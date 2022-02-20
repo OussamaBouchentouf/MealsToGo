@@ -53,7 +53,7 @@ export const RestaurantScreen = ({ navigation }) => {
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    wait(2000).then(() => {
+    wait(500).then(() => {
       setRefreshing(false); //DevSettings.reload();
     });
   }, []);
