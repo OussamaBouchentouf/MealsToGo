@@ -1,9 +1,9 @@
 import React, { useState, useContext } from "react";
 import { Text } from "react-native";
+import { ActivityIndicator, Colors } from "react-native-paper";
 
 import {
   AccountBackground,
-  AccountCover,
   AccountContainer,
   AuthButton,
   AuthInput,
@@ -15,11 +15,10 @@ import { AuthenticationContext } from "../../../services/authentication/authenti
 export const RegisterScreen = ({ navigation }) => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
-  const { onSignUp, error } = useContext(AuthenticationContext);
+  const { onSignUp, isLoading, error } = useContext(AuthenticationContext);
 
   return (
     <AccountBackground>
-      <AccountCover />
       <Title>Meals To Go</Title>
       <AccountContainer>
         <AuthInput
@@ -40,15 +39,19 @@ export const RegisterScreen = ({ navigation }) => {
         <ErrorContainer>
           {error && <Text style={{ color: "red" }}>{error}</Text>}
         </ErrorContainer>
-        <AuthButton
-          icon="email"
-          mode="contained"
-          onPress={() => {
-            onSignUp(email, password);
-          }}
-        >
-          Register
-        </AuthButton>
+        {!isLoading ? (
+          <AuthButton
+            icon="email"
+            mode="contained"
+            onPress={() => {
+              onSignUp(email, password);
+            }}
+          >
+            Register
+          </AuthButton>
+        ) : (
+          <ActivityIndicator animating={true} color={Colors.blue300} />
+        )}
       </AccountContainer>
       <AuthButton mode="contained" onPress={() => navigation.goBack()}>
         Back

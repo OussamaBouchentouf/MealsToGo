@@ -14,9 +14,6 @@ import {
 import { useFonts, Comforter_400Regular } from "@expo-google-fonts/comforter";
 
 import { theme } from "./src/infrastructure/theme";
-import { RestaurantContextProvider } from "./src/services/restaurants/restaurants.context";
-import { LocationContextProvider } from "./src/services/location/location.context";
-import { FavouritesContextProvider } from "./src/services/favourites/favourite.context";
 import { NavigationComponents } from "./src/infrastructure/navigation/index.Navigator";
 import { AuthenticationContextProvider } from "./src/services/authentication/authentication.context";
 
@@ -53,13 +50,7 @@ export default function App() {
 
       <ThemeProvider theme={theme}>
         <AuthenticationContextProvider>
-          <FavouritesContextProvider>
-            <LocationContextProvider>
-              <RestaurantContextProvider>
-                <NavigationComponents />
-              </RestaurantContextProvider>
-            </LocationContextProvider>
-          </FavouritesContextProvider>
+          <NavigationComponents />
         </AuthenticationContextProvider>
       </ThemeProvider>
     </>

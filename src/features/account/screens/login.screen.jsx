@@ -1,12 +1,11 @@
-import { NavigationContainer } from "@react-navigation/native";
 import React, { useContext, useState } from "react";
 import { Text } from "react-native";
+import { ActivityIndicator, Colors } from "react-native-paper";
 
 import { AuthenticationContext } from "../../../services/authentication/authentication.context";
 
 import {
   AccountBackground,
-  AccountCover,
   AccountContainer,
   AuthButton,
   AuthInput,
@@ -17,11 +16,10 @@ import {
 export const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
-  const { onLogin, error } = useContext(AuthenticationContext);
+  const { onLogin, isLoading, error } = useContext(AuthenticationContext);
 
   return (
     <AccountBackground>
-      <AccountCover />
       <Title>Meals To Go</Title>
       <AccountContainer>
         <AuthInput
@@ -42,13 +40,17 @@ export const LoginScreen = ({ navigation }) => {
         <ErrorContainer>
           {error && <Text style={{ color: "red" }}>{error}</Text>}
         </ErrorContainer>
-        <AuthButton
-          icon="lock-open-outline"
-          mode="contained"
-          onPress={() => onLogin(email, password)}
-        >
-          Login
-        </AuthButton>
+        {!isLoading ? (
+          <AuthButton
+            icon="lock-open-outline"
+            mode="contained"
+            onPress={() => onLogin(email, password)}
+          >
+            Login
+          </AuthButton>
+        ) : (
+          <ActivityIndicator animating={true} color={Colors.blue300} />
+        )}
       </AccountContainer>
       <AuthButton mode="contained" onPress={() => navigation.goBack()}>
         Back

@@ -1,5 +1,4 @@
 import React, { useState, createContext } from "react";
-import { Alert } from "react-native";
 
 import {
   createUserWithEmailAndPassword,
@@ -16,7 +15,17 @@ export const AuthenticationContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
 
+  authentication.onAuthStateChanged((usr) => {
+    if (usr) {
+      setUser(usr);
+      setIsLoading(false);
+    } else {
+      setIsLoading(false);
+    }
+  });
+
   const onLogin = (email, password) => {
+    setIsLoading(true);
     signInWithEmailAndPassword(authentication, email, password)
       .then((ourUser) => {
         setUser(ourUser);
@@ -29,6 +38,7 @@ export const AuthenticationContextProvider = ({ children }) => {
   };
 
   const onSignUp = (email, password) => {
+    setIsLoading(true);
     createUserWithEmailAndPassword(authentication, email, password)
       .then((ourUser) => {
         setUser(ourUser);
@@ -36,11 +46,14 @@ export const AuthenticationContextProvider = ({ children }) => {
       })
       .catch(() => {
         setError("Error : invalid-email");
+        setIsLoading(false);
       });
   };
 
   const onLogout = () => {
+    setUser(null);
     signOut(authentication);
+    setIsLoading(false);
   };
 
   return (

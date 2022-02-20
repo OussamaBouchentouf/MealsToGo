@@ -2,7 +2,6 @@ import React from "react";
 
 import {
   AccountBackground,
-  AccountCover,
   AccountContainer,
   AuthButton,
   Title,
@@ -11,7 +10,6 @@ import {
 export const AccountScreen = ({ navigation }) => {
   return (
     <AccountBackground>
-      <AccountCover />
       <Title>Meals To Go</Title>
       <AccountContainer>
         <AuthButton
