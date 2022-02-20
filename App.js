@@ -2,8 +2,6 @@ import React from "react";
 import { Platform, StatusBar } from "react-native";
 import { ThemeProvider } from "styled-components/native";
 
-import * as firebase from "firebase";
-
 import {
   useFonts as useOswals,
   Oswald_400Regular,
@@ -13,25 +11,16 @@ import {
   Lato_400Regular,
   Lato_700Bold,
 } from "@expo-google-fonts/lato";
+import { useFonts, Comforter_400Regular } from "@expo-google-fonts/comforter";
 
 import { theme } from "./src/infrastructure/theme";
 import { RestaurantContextProvider } from "./src/services/restaurants/restaurants.context";
 import { LocationContextProvider } from "./src/services/location/location.context";
 import { FavouritesContextProvider } from "./src/services/favourites/favourite.context";
 import { NavigationComponents } from "./src/infrastructure/navigation/index.Navigator";
+import { AuthenticationContextProvider } from "./src/services/authentication/authentication.context";
 
 const isAndroid = Platform.OS === "android" ? true : false;
-
-const firebaseConfig = {
-  apiKey: "AIzaSyBG6rUiiHpHwnn5R2plqyK37au1LhcikHQ",
-  authDomain: "mealstogo-fbd93.firebaseapp.com",
-  projectId: "mealstogo-fbd93",
-  storageBucket: "mealstogo-fbd93.appspot.com",
-  messagingSenderId: "586160479526",
-  appId: "1:586160479526:web:e38dfd460c345aa5c335e7",
-};
-
-firebase.initializeApp(firebaseConfig);
 
 export default function App() {
   let [oswaldLoader] = useOswals({
@@ -41,8 +30,11 @@ export default function App() {
     Lato_400Regular,
     Lato_700Bold,
   });
+  let [comforterLoader] = useFonts({
+    Comforter_400Regular,
+  });
 
-  if (!oswaldLoader || !latoLoader) return null;
+  if (!oswaldLoader || !latoLoader || !comforterLoader) return null;
 
   return (
     <>
@@ -60,13 +52,15 @@ export default function App() {
       )}
 
       <ThemeProvider theme={theme}>
-        <FavouritesContextProvider>
-          <LocationContextProvider>
-            <RestaurantContextProvider>
-              <NavigationComponents />
-            </RestaurantContextProvider>
-          </LocationContextProvider>
-        </FavouritesContextProvider>
+        <AuthenticationContextProvider>
+          <FavouritesContextProvider>
+            <LocationContextProvider>
+              <RestaurantContextProvider>
+                <NavigationComponents />
+              </RestaurantContextProvider>
+            </LocationContextProvider>
+          </FavouritesContextProvider>
+        </AuthenticationContextProvider>
       </ThemeProvider>
     </>
   );
