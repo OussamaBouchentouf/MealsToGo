@@ -24,11 +24,16 @@ export const AuthButton = styled(Button).attrs({
   color: colors.brand.primary,
 })`
   padding: 08px;
+  border-radius: 10px;
+  width: ${Dimensions.get("screen").width * 0.4};
+  align-self: center;
 `;
 
-export const AuthInput = styled(TextInput)`
+export const AuthInput = styled(TextInput).attrs({ mode: "outlined" })`
   width: ${Dimensions.get("screen").width * 0.8}px;
   margin-bottom: 10px;
+  border-top-right-radius: 15px;
+  border-top-left-radius: 15px;
 `;
 
 export const Title = styled.Text`
@@ -43,4 +48,12 @@ export const ErrorContainer = styled.View`
   align-self: center;
   margin-top: 10px;
   margin-bottom: 10px;
+`;
+
+export const AnimationWrapper = styled.View`
+  position: absolute;
+  top: 8%;
+  width: 100%;
+  height: 30%;
+  opacity: 0.9;
 `;

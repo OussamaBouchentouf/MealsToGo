@@ -38,7 +38,9 @@ export const LoginScreen = ({ navigation }) => {
           onChangeText={(u) => setPassword(u)}
         />
         <ErrorContainer>
-          {error && <Text style={{ color: "red" }}>{error}</Text>}
+          {error && (
+            <Text style={{ color: "red", fontWeight: "bold" }}>{error}</Text>
+          )}
         </ErrorContainer>
         {!isLoading ? (
           <AuthButton
