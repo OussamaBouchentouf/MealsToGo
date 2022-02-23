@@ -14,7 +14,7 @@ const FavouritesWrapper = styled.View`
   padding: 5px;
   align-items: center;
   margin-bottom: 10px;
-  height: ${Dimensions.get("window").height * 0.25}px;
+  height: ${Dimensions.get("window").height * 0.3}px;
   align-self: center;
   width: 95%;
   background-color: ${theme.colors.ui.tertiary};
