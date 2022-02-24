@@ -15,6 +15,7 @@ export const AccountBackground = styled.ImageBackground.attrs({
 export const AccountContainer = styled.View`
   background-color: rgba(255,255,255,0.7)
   padding: 20px;
+  border-radius : 20px;
   margin-top : 2%;
   justify-content : center;
   margin-bottom : 30px;
