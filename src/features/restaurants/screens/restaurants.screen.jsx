@@ -14,6 +14,7 @@ import { RestaurantContext } from "../../../services/restaurants/restaurants.con
 import { FavouritesContext } from "../../../services/favourites/favourite.context";
 import { Search } from "../components/search.component";
 import { FavouriteBar } from "../../../components/favourites/favourites-bar.component";
+import { FadeAnim } from "../../animations/fade.animation";
 
 const GlobalView = styled(SafeAreaView)`
   align-items: flex-start;
@@ -90,7 +91,9 @@ export const RestaurantScreen = ({ navigation }) => {
                     });
                   }}
                 >
-                  <RestaurantInfo restaurant={item} />
+                  <FadeAnim>
+                    <RestaurantInfo restaurant={item} />
+                  </FadeAnim>
                 </TouchableOpacity>
               );
             }}

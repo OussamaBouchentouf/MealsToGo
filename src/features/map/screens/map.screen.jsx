@@ -8,6 +8,7 @@ import { LocationContext } from "../../../services/location/location.context";
 import { RestaurantContext } from "../../../services/restaurants/restaurants.context";
 import { Search } from "../components/search.component";
 import { MapCallout } from "../components/map-callout.component";
+import { FadeAnim } from "../../animations/fade.animation";
 
 const Map = styled(MapView)`
   height: ${Dimensions.get("screen").height}px;
@@ -30,38 +31,40 @@ export const MapScreen = ({ navigation }) => {
   }, [location, viewport]);
   return (
     <Pressable onPress={() => Keyboard.dismiss()}>
-      <Search />
-      <Map
-        region={{
-          latitude: lat,
-          longitude: lng,
-          latitudeDelta: latDelta,
-          longitudeDelta: 0.02,
-        }}
-      >
-        {restaurants.map((restaurant) => {
-          return (
-            <MapView.Marker
-              key={restaurant.name}
-              title={restaurant.name}
-              coordinate={{
-                latitude: restaurant.geometry.location.lat,
-                longitude: restaurant.geometry.location.lng,
-              }}
-            >
-              <MapView.Callout
-                onPress={() => {
-                  navigation.navigate("RestaurantsDetails", {
-                    restaurantFromRoute: restaurant,
-                  });
+      <FadeAnim>
+        <Search />
+        <Map
+          region={{
+            latitude: lat,
+            longitude: lng,
+            latitudeDelta: latDelta,
+            longitudeDelta: 0.02,
+          }}
+        >
+          {restaurants.map((restaurant) => {
+            return (
+              <MapView.Marker
+                key={restaurant.name}
+                title={restaurant.name}
+                coordinate={{
+                  latitude: restaurant.geometry.location.lat,
+                  longitude: restaurant.geometry.location.lng,
                 }}
               >
-                <MapCallout restaurant={restaurant} />
-              </MapView.Callout>
-            </MapView.Marker>
-          );
-        })}
-      </Map>
+                <MapView.Callout
+                  onPress={() => {
+                    navigation.navigate("RestaurantsDetails", {
+                      restaurantFromRoute: restaurant,
+                    });
+                  }}
+                >
+                  <MapCallout restaurant={restaurant} />
+                </MapView.Callout>
+              </MapView.Marker>
+            );
+          })}
+        </Map>
+      </FadeAnim>
     </Pressable>
   );
 };
